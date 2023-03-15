@@ -126,65 +126,85 @@ void Figure::set_min_framing_rectangle(Figure figure) {
 
 
 
-Figure FigureList::operator[](const int index) const{
-	if ((index < 0) || (capacity <= index)) {
+Figure* FigureList::operator[](const int index) const{
+	if ((index < 0) || (_size <= index)) {
 		throw out_of_range("[FigureList::operator[]] Index is out of range.");
 	}
 	return figures[index];
 }
 
-int FigureList::get_count() {
-	return count;
+int FigureList::get_size() {
+	return _size;
 }
 
-Figure FigureList::indexed_get(int index) {
-	if ((index < 0) || (capacity <= index)) {
+Figure* FigureList::indexed_get(int index) {
+	if ((index < 0) || (_size <= index)) {
 		throw out_of_range("[FigureList::operator[]] Index is out of range.");
 	}
 	return this->figures[index];
 }
 
-void FigureList::figure_add(Figure figure) {
-	if (count+1>=capacity) {
-		throw out_of_range("[FigureList::operator[]] Array is full.");
+void FigureList::figure_add(Figure* figure) {
+	auto copy = new Figure*[_size+1];
+	for (int i = 0; i < _size; ++i) {
+		copy[i] = figures[i];
 	}
-	Figure void_figure;
-	this->figures[count] = figure;
-	this->count++;
+	copy[_size] = figure;
+	delete[] figures;
+	figures = copy;
+	this->_size++;
 }
 
-void FigureList::figure_insert(Figure figure, int index) {
-	if ((index < 0) || (index>count)) {
+void FigureList::figure_insert(Figure* figure, int index) {
+	if ((index < 0) || (_size < index)) {
 		throw out_of_range("[FigureList::operator[]] Index is out of range.");
 	}
-	if (count + 1 > capacity) {
-		throw out_of_range("Array is full");
+	auto copy = new Figure * [_size + 1];
+	for (int i = 0; i < _size; i++) {
+		if (i < index - 1)
+			copy[i] = figures[i];
+		else
+			copy[i + 1] = figures[i];
 	}
-	for (int i = count; i > index; i--) {
-		this->figures[i] = this->figures[i - 1];
-	}
-	this->figures[index] = figure;
-	this->count++;
+	copy[index] = figure;
+	delete[] figures;
+	figures = copy;
+	this->_size++;
 }
 
 void FigureList::indexed_delete(int index) {
-	if ((index < 0) || (index > count)) {
+	if ((index < 0) || (index > _size)) {
 		throw out_of_range("[FigureList::operator[]] Index is out of range.");
 	}
-	for (int i = index; i < count; i++) {
-		this->figures[i] = this->figures[i+1];
+	auto copy = new Figure * [_size - 1];
+	for (int i = index; i < _size-1; i++) {
+			figures[i] = figures[i + 1];
 	}
-	this->count--;
+	for (int i = index; i < _size - 1; i++) {
+		copy[i] = figures[i];
+	}
+	delete[] figures;
+	figures = copy;
+	this->_size--;
 }
 
 Figure FigureList::max_square_search() {
-	if (count == 0) {
+	if (_size == 0) {
 		throw out_of_range("[FigureList is empty");
 	}
 	Figure result_figure;
-	for (int i = 0; i < count; i++) {
-		if (result_figure.get_square() < this->figures[i].get_square())
-			result_figure = this->figures[i];
+	for (int i = 0; i < _size; i++) {
+		if (result_figure.get_square() < (* figures[i]).get_square())
+			result_figure = *figures[i];
 	}
 	return result_figure;
+}
+
+FigureList::FigureList() {
+	figures = new Figure * [0];
+	_size = 0;
+}
+
+FigureList:: ~FigureList() {
+	delete[] figures;
 }
