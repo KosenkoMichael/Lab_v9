@@ -161,7 +161,7 @@ void FigureList::figure_insert(Figure* figure, int index) {
 	}
 	auto copy = new Figure * [_size + 1];
 	for (int i = 0; i < _size; i++) {
-		if (i < index - 1)
+		if (i < index)
 			copy[i] = figures[i];
 		else
 			copy[i + 1] = figures[i];
@@ -177,11 +177,17 @@ void FigureList::indexed_delete(int index) {
 		throw out_of_range("[FigureList::operator[]] Index is out of range.");
 	}
 	auto copy = new Figure * [_size - 1];
-	for (int i = index; i < _size-1; i++) {
+	/*for (int i = index; i < _size-1; i++) {
 			figures[i] = figures[i + 1];
 	}
 	for (int i = index; i < _size - 1; i++) {
 		copy[i] = figures[i];
+	}*/
+	for (int i = 0; i < _size - 1; ++i) {
+		if (index > i)
+			copy[i] = figures[i];
+		else
+			copy[i] = figures[i + 1];
 	}
 	delete[] figures;
 	figures = copy;
@@ -192,7 +198,7 @@ Figure FigureList::max_square_search() {
 	if (_size == 0) {
 		throw out_of_range("[FigureList is empty");
 	}
-	Figure result_figure;
+	Figure result_figure(*figures[0]);
 	for (int i = 0; i < _size; i++) {
 		if (result_figure.get_square() < (* figures[i]).get_square())
 			result_figure = *figures[i];
@@ -207,4 +213,41 @@ FigureList::FigureList() {
 
 FigureList:: ~FigureList() {
 	delete[] figures;
+}
+
+void FigureList::print(){
+	for (int i = 0; i < _size; ++i) {
+		cout << i << " ";
+		switch (figures[i]->get_type()) {
+		case 0: cout << "ellipse" << " ";
+			break;
+		case 1: cout << "trapezoid" << " ";
+			break;
+		case 2: cout << "rectangle" << " ";
+			break;
+		}
+		for (int j = 0; j < 4; ++j) {
+			cout << figures[i]->get_point('x', j) << " " << figures[i]->get_point('y', j) << " ";
+		}
+		cout << "\n";
+	}
+}
+
+Figure* Figure::create(FigureType type, Point* points) {
+	return new Figure(type, points);
+}
+
+void Figure::print() {
+	switch (type) {
+	case 0: cout << "ellipse" << " ";
+		break;
+	case 1: cout << "trapezoid" << " ";
+		break;
+	case 2: cout << "rectangle" << " ";
+		break;
+	}
+	for (int j = 0; j < 4; ++j) {
+		cout << apex[j].x << " " << apex[j].y << " ";
+	}
+	cout << "\n";
 }

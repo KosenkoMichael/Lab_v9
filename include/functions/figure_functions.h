@@ -26,6 +26,8 @@ namespace kos {
 		float get_perim();
 		float get_square();
 		void set_min_framing_rectangle(Figure figure);
+		Figure* create(FigureType type, Point* points);
+		void print();
 	};
 	class FigureList {
 	private:
@@ -41,5 +43,6 @@ namespace kos {
 		void figure_insert(Figure* figure, int index);
 		void indexed_delete(int index);
 		Figure max_square_search();
+		void print();
 	};
 }
