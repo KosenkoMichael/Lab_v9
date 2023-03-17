@@ -26,6 +26,7 @@ namespace kos {
 		void set_min_framing_rectangle(Figure figure);
 		Figure* create(FigureType type, Point* points);
 		void print();
+		bool check_figure();
 	};
 	class FigureList {
 	private:
@@ -42,5 +43,8 @@ namespace kos {
 		void indexed_delete(int index);
 		Figure max_square_search();
 		void print();
+		FigureList(FigureList& rhs);
+		void swap(FigureList& rhs)noexcept;
+		FigureList& operator=(FigureList& rhs);
 	};
 }

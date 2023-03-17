@@ -245,3 +245,41 @@ void Figure::print() {
 	}
 	cout << "\n";
 }
+FigureList::FigureList(FigureList& rhs){
+	Figure figure;
+	Point points[4];
+	for (int i = 0; i < rhs._size; ++i) {
+		for (int j = 0; j < 4;++j) {
+			points[j].x = rhs.figures[i]->get_point('x', j);
+			points[j].y = rhs.figures[i]->get_point('y', j);
+		}
+		figure_add(figure.create(rhs.figures[i]->get_type(), points));
+	}
+}
+void FigureList::swap(FigureList& rhs)noexcept{
+	std::swap(_size, rhs._size);
+	std::swap(figures, rhs.figures);
+}
+
+FigureList& FigureList::operator=(FigureList& rhs) {
+	FigureList copy(rhs);
+	swap(copy);
+	return *this;
+}
+
+bool Figure::check_figure() {
+	switch (type) {
+	case ellipse: {
+		if ((apex[0].y == apex[2].y) && (apex[1].x == apex[3].x) && (apex[0].x < apex[1].x) && (apex[2].x > apex[1].x) && (apex[1].y == apex[0].y) && (apex[3].y == apex[0].y))
+			return true;
+	}
+	case rectangle: {
+		if ((apex[0].x == apex[3].x) && (apex[1].x == apex[2].x) && (apex[0].y == apex[1].y) && (apex[3].y == apex[2].y) && (apex[0].x < apex[1].x) && (apex[0].y > apex[3].y))
+			return true;
+	}
+	case trapezoid: {
+		if ((apex[0].y == apex[1].y) && (apex[3].y == apex[2].y) && (apex[0].x < apex[1].x) && (apex[3].x < apex[2].x))
+			return true;
+	}
+	}
+}

@@ -18,22 +18,24 @@ int main() {
 		system("cls");
 		switch (choice) {
 		case 1: {
+			Figure figure;
 			Point cur_points[4];
 			int type;
 			do {
-				cout << "¬ведите тип фигуры >>>\n0 - ellipse\n1 - trapezoid\n2 - rectangle\n";
-				cin >> type;
-			} while ((type < 0) || (type > 2));
-			cout << "¬ведите координаты точек фигуры >>>\n";
-			for (int i = 0; i < 4; ++i) {
-				cin >> cur_points[i].x >> cur_points[i].y;
-			}
+				do {
+					cout << "¬ведите тип фигуры >>>\n0 - ellipse\n1 - trapezoid\n2 - rectangle\n";
+					cin >> type;
+				} while ((type < 0) || (type > 2));
+				cout << "¬ведите координаты точек фигуры >>>\n";
+				for (int i = 0; i < 4; ++i) {
+					cin >> cur_points[i].x >> cur_points[i].y;
+				}
+			} while (!(*figure.create((FigureType)type, cur_points)).check_figure());
 			int voult;
 			do {
 				cout << "¬ведите индекс вставки (не более " << figure_list.get_size() <<")\n";
 				cin >> voult;
 			} while((voult<0)||(voult>figure_list.get_size()));
-			Figure figure;
 			const auto ptr = figure.create((FigureType)type, cur_points);
 			figure_list.figure_insert(ptr, voult);
 		}
