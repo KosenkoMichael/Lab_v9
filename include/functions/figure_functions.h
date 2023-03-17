@@ -21,8 +21,6 @@ namespace kos {
 		bool operator== (const Figure figure) const;
 		FigureType get_type();
 		float get_point(char a, int i);
-		void set_type(FigureType Type);
-		void set_apex(Point* apex);
 		float get_perim();
 		float get_square();
 		void set_min_framing_rectangle(Figure figure);

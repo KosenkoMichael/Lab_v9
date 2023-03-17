@@ -12,7 +12,6 @@ int main() {
 	int choice;
 	FigureList figure_list;
 	do {
-
 		cout << "Введите номер действия, которое вы хотели бы совершить >>>\n1 - Вставить элемент в список по указанному индексу\n"
 			"2 - Удалить элемент из списка по указанному индексу\n3 - Вывести список на экран\n4 - Работа с элементами массива\n0 - завершить работу программы\n";
 		cin >> choice;
@@ -21,12 +20,19 @@ int main() {
 		case 1: {
 			Point cur_points[4];
 			int type;
-			cin >> type;
+			do {
+				cout << "Введите тип фигуры >>>\n0 - ellipse\n1 - trapezoid\n2 - rectangle\n";
+				cin >> type;
+			} while ((type < 0) || (type > 2));
+			cout << "Введите координаты точек фигуры >>>\n";
 			for (int i = 0; i < 4; ++i) {
 				cin >> cur_points[i].x >> cur_points[i].y;
 			}
 			int voult;
-			cin >> voult;
+			do {
+				cout << "Введите индекс вставки (не более " << figure_list.get_size() <<")\n";
+				cin >> voult;
+			} while((voult<0)||(voult>figure_list.get_size()));
 			Figure figure;
 			const auto ptr = figure.create((FigureType)type, cur_points);
 			figure_list.figure_insert(ptr, voult);
@@ -39,7 +45,10 @@ int main() {
 			}
 			else {
 				int choice_2;
-				cin >> choice_2;
+				do {
+					cout << "Введите индекс удаления (не более " << figure_list.get_size()-1 << ")\n";
+					cin >> choice_2;
+				} while ((choice_2 < 0) || (choice_2 >= figure_list.get_size()));
 				figure_list.indexed_delete(choice_2);
 			}
 		}
@@ -60,33 +69,48 @@ int main() {
 				cout << "Массив пуст" << "\n";
 			}
 			else {
-				cout << "1 - вычисление периметра фигуры\n2 - вычисление площади фигуры\n3 - Вычисление минисального обрамляющего прямоугольника"
-					"\n4 - Поиск фигуры максималтной площади";
+				figure_list.print();
+				cout << "\n";
 				int choice_3;
-				cin >> choice_3;
+				do {
+					cout << "1 - вычисление периметра фигуры\n2 - вычисление площади фигуры\n3 - Вычисление минисального обрамляющего прямоугольника"
+						"\n4 - Поиск фигуры максималтной площади";
+					cin >> choice_3;
+				} while ((choice_3<1) || (choice>4));
 				switch (choice_3) {
 				case 1: {
 					int index;
-					cin >> index;
-					cout << figure_list.indexed_get(index)->get_perim();
+					do {
+						cout << "Введите индекс фигуры (не более " << figure_list.get_size()-1 << ")\n";
+						cin >> index;
+					} while ((index < 0) || (index >= figure_list.get_size()));
+					cout << figure_list.indexed_get(index)->get_perim() <<"\n";
 				}
 					  break;
 				case 2: {
 					int index;
-					cin >> index;
-					cout << figure_list.indexed_get(index)->get_square();
+					do {
+						cout << "Введите индекс фигуры (не более " << figure_list.get_size()-1 << ")\n";
+						cin >> index;
+					} while ((index < 0) || (index >= figure_list.get_size()));
+					cout << figure_list.indexed_get(index)->get_square() << "\n";
 				}
 					  break;
 				case 3: {
 					int index;
-					cin >> index;
+					do {
+						cout << "Введите индекс фигуры (не более " << figure_list.get_size()-1 << ")\n";
+						cin >> index;
+					} while ((index < 0) || (index >= figure_list.get_size()));
 					Figure framing_rectangle;
 					framing_rectangle.set_min_framing_rectangle(*figure_list.indexed_get(index));
 					framing_rectangle.print();
+					cout << "\n";
 				}
 					  break;
 				case 4: {
 					figure_list.max_square_search().print();
+					cout << "\n";
 				}
 					  break;
 				}

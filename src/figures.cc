@@ -39,19 +39,10 @@ bool Figure::operator== (const Figure figure) const {
 	return true;
 }
 
-void Figure::set_type(FigureType Type) {
-	this->type = Type;
-}
-
 FigureType Figure::get_type() {
 	return this->type;
 }
 
-void Figure::set_apex(Point* apex){
-	for (int i = 0; i < 4; i++) {
-		this->apex[i] = apex[i];
-	}
-}
 
 float Figure::get_point(char a, int i) {
 	switch (a) {
@@ -212,12 +203,15 @@ FigureList::FigureList() {
 }
 
 FigureList:: ~FigureList() {
+	for (int i = 0; i < _size; ++i) {
+		delete figures[i];
+	}
 	delete[] figures;
 }
 
 void FigureList::print(){
 	for (int i = 0; i < _size; ++i) {
-		cout << i << " ";
+		cout << i << ") ";
 		switch (figures[i]->get_type()) {
 		case 0: cout << "ellipse" << " ";
 			break;
