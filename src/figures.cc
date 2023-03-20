@@ -268,18 +268,52 @@ FigureList& FigureList::operator=(FigureList& rhs) {
 }
 
 bool Figure::check_figure() {
+	bool flag = false;
 	switch (type) {
 	case ellipse: {
-		if ((apex[0].y == apex[2].y) && (apex[1].x == apex[3].x) && (apex[0].x < apex[1].x) && (apex[2].x > apex[1].x) && (apex[1].y == apex[0].y) && (apex[3].y == apex[0].y))
-			return true;
+		if ((apex[0].y == apex[2].y) && (apex[1].x == apex[3].x) &&
+			(apex[0].x < apex[1].x) && (apex[2].x > apex[1].x) && (apex[1].y > apex[0].y) && (apex[3].y < apex[0].y))
+			flag = true;
 	}
+				break;
+	case trapezoid: {
+		if ((apex[0].y == apex[1].y) && (apex[2].y == apex[3].y))
+			flag = true;
+	}
+				  break;
 	case rectangle: {
 		if ((apex[0].x == apex[3].x) && (apex[1].x == apex[2].x) && (apex[0].y == apex[1].y) && (apex[3].y == apex[2].y) && (apex[0].x < apex[1].x) && (apex[0].y > apex[3].y))
-			return true;
+			flag = true;
 	}
-	case trapezoid: {
-		if ((apex[0].y == apex[1].y) && (apex[3].y == apex[2].y) && (apex[0].x < apex[1].x) && (apex[3].x < apex[2].x))
-			return true;
+				  break;
 	}
+	return flag;
+}
+
+Figure* Figure::create_ellipse(float* ellipse_points) {
+	type = ellipse;
+	apex[0].x = ellipse_points[0];
+	apex[0].y = apex[2].y = ellipse_points[1];
+	apex[1].x = apex[3].x = ellipse_points[2];
+	apex[1].y = ellipse_points[3];
+	apex[2].x = apex[1].x * 2 - apex[0].x;
+	apex[3].y = apex[0].y * 2 - apex[1].y;
+	return new Figure(type, apex);
+}
+Figure* Figure::create_rectangle(float* rectangle_points) {
+	type = rectangle;
+	apex[0].x = apex[3].x = rectangle_points[0];
+	apex[0].y = apex[1].y = rectangle_points[1];
+	apex[1].x = apex[2].x = rectangle_points[2];
+	apex[2].y = apex[3].y = rectangle_points[3];
+	return new Figure(type, apex);
+}
+Figure* Figure::create_trapezoid(float* trapezoid_points) {
+	type = trapezoid;
+	for (int i = 0, j=0; i < 4; ++i) {
+		apex[i].x = trapezoid_points[j];
+		apex[i].y = trapezoid_points[j+1];
+		j += 2;
 	}
+	return new Figure(type, apex);
 }

@@ -24,9 +24,12 @@ namespace kos {
 		float get_perim();
 		float get_square();
 		void set_min_framing_rectangle(Figure figure);
-		Figure* create(FigureType type, Point* points);
-		void print();
 		bool check_figure();
+		Figure* create(FigureType type, Point* points);
+		Figure* create_ellipse(float* ellipse_points);
+		Figure* create_rectangle(float* rectangle_points);
+		Figure* create_trapezoid(float* trapezoid_points);
+		void print();
 	};
 	class FigureList {
 	private:
@@ -35,16 +38,16 @@ namespace kos {
 	public:
 		~FigureList();
 		FigureList();
+		FigureList(FigureList& rhs);
 		Figure* operator[](const int index) const;
+		FigureList& operator=(FigureList& rhs);
 		void figure_add(Figure* figure);
 		Figure* indexed_get(int index);
 		int get_size();
 		void figure_insert(Figure* figure, int index);
 		void indexed_delete(int index);
 		Figure max_square_search();
-		void print();
-		FigureList(FigureList& rhs);
 		void swap(FigureList& rhs)noexcept;
-		FigureList& operator=(FigureList& rhs);
+		void print();
 	};
 }
