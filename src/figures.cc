@@ -130,7 +130,7 @@ int FigureList::get_size() {
 
 Figure* FigureList::indexed_get(int index) {
 	if ((index < 0) || (_size <= index)) {
-		throw out_of_range("[FigureList::operator[]] Index is out of range.");
+		throw 0;
 	}
 	return this->figures[index];
 }
@@ -165,7 +165,7 @@ void FigureList::figure_insert(Figure* figure, int index) {
 
 void FigureList::indexed_delete(int index) {
 	if ((index < 0) || (index > _size)) {
-		throw out_of_range("[FigureList::operator[]] Index is out of range.");
+		throw runtime_error("Runtime_error_Kosenko");
 	}
 	auto copy = new Figure * [_size - 1];
 	/*for (int i = index; i < _size-1; i++) {
@@ -187,7 +187,7 @@ void FigureList::indexed_delete(int index) {
 
 Figure FigureList::max_square_search() {
 	if (_size == 0) {
-		throw out_of_range("[FigureList is empty");
+		throw 0;
 	}
 	Figure result_figure(*figures[0]);
 	for (int i = 0; i < _size; i++) {

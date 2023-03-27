@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace kos {
 	enum FigureType {
@@ -30,7 +31,12 @@ namespace kos {
 		Figure* create_rectangle(float* rectangle_points);
 		Figure* create_trapezoid(float* trapezoid_points);
 		void print();
+		friend std::ostream& operator<< (std::ostream& out, Figure& list);
 	};
+	std::ostream& operator<< (std::ostream& out, Figure& list) {
+		list.print();
+		return out;
+	}
 	class FigureList {
 	private:
 		Figure** figures;
@@ -49,5 +55,10 @@ namespace kos {
 		Figure max_square_search();
 		void swap(FigureList& rhs)noexcept;
 		void print();
+		friend std::ostream& operator<< (std::ostream& out, FigureList& list);
 	};
+	std::ostream& operator<< (std::ostream& out, FigureList& list) {
+		list.print();
+		return out;
+	}
 }

@@ -93,7 +93,8 @@ int main() {
 				cout << "Empty List" << "\n";
 			}
 			else {
-				figure_list.print();
+				/*figure_list.print();*/
+				cout << figure_list;
 			}
 		}
 			break;
@@ -103,7 +104,8 @@ int main() {
 				cout << "Empty List" << "\n";
 			}
 			else {
-				figure_list.print();
+				/*figure_list.print();*/
+				cout << figure_list;
 				cout << "\n";
 				int choice_3;
 				do {
@@ -138,12 +140,15 @@ int main() {
 					} while ((index < 0) || (index >= figure_list.get_size()));
 					Figure framing_rectangle;
 					framing_rectangle.set_min_framing_rectangle(*figure_list.indexed_get(index));
-					framing_rectangle.print();
+					/*framing_rectangle.print();*/
+					cout << framing_rectangle;
 					cout << "\n";
 				}
 					  break;
 				case 4: {
-					figure_list.max_square_search().print();
+					/*figure_list.max_square_search().print();*/
+					Figure max_square = figure_list.max_square_search();
+					cout << max_square;
 					cout << "\n";
 				}
 					  break;

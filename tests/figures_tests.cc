@@ -2,6 +2,10 @@
 
 #include <functions/figure_functions.h>
 
+#include <stdexcept>
+
+#include <iostream>
+
 using namespace kos;
 
 TEST(FunctionsTests, Destructor) {
@@ -192,8 +196,15 @@ TEST(FunctionsTests, max_square_search_emptylist_Test18) {
     sample_list.figure_insert(test_trapezoid, 0);
     sample_list.figure_insert(test_rectangle, 0);*/
 
-    Figure result_figure = sample_list.max_square_search();
+    Figure result_figure;
     int flag = 0;
+    try {
+        result_figure = sample_list.max_square_search();
+    }
+    catch (int error) {
+        std::cout << "\n\tIndex is Out_of_range\n\n";
+        flag++;
+    }
     if (result_figure == test_trapezoid) {
         flag++;
     }
@@ -206,8 +217,15 @@ TEST(FunctionsTests, indexed_get_figure_add_invalidindex_Test19) {
     Point sample_points[4] = { -1,1,1,1,1,-1,-1,-1 };
     Figure sample_figure(rectangle, sample_points);                           
     sample_list.figure_add(figure.create(rectangle, sample_points));
-    Figure test_figure = *sample_list.indexed_get(-1);
     int flag = 0;
+    Figure test_figure;
+    try {
+        test_figure = *sample_list.indexed_get(-1);
+    }
+    catch (int error) {
+        std::cout << "\n\tIndex is Out_of_range\n\n";
+        flag++;
+    }
     if (test_figure == sample_figure) {
         flag++;
     }
@@ -259,12 +277,13 @@ TEST(FunctionsTests, indexed_delete_invalidindex_Test22) {
     Point cur_point[4] = { -1,1,1,1,2,0,-2,0 };
     Figure cur_figure(trapezoid, cur_point);
     sample_list.figure_add(figure.create(trapezoid, cur_point));
-    sample_list.indexed_delete(-1);
-    int flag = 0;
-    if (*sample_list.indexed_get(0) == cur_figure) {
-        flag++;
-    }
-    EXPECT_TRUE(flag);
+    bool flag = false;
+        /*sample_list.indexed_delete(-1);
+        if (*sample_list.indexed_get(0) == cur_figure) {
+            flag = true;
+        }
+    EXPECT_TRUE(flag);*/
+    EXPECT_ANY_THROW(sample_list.indexed_delete(-1), std::runtime_error);
 }
 
 
