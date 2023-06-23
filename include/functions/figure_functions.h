@@ -13,9 +13,8 @@ namespace kos {
 	};
 
 	class Figure {
-	protected:
-		Figure() = default;
 	public:
+		Figure() = default;
 		Point apex[4];
 		virtual float get_perim() = 0;
 		virtual float get_square() = 0;
@@ -25,6 +24,7 @@ namespace kos {
 		bool virtual check_figure() = 0;
 		void virtual print() = 0;
 		virtual unique_ptr<Figure> clone() const = 0;
+		virtual ~Figure() = default;
 	};
 
 	class Rectangle : public Figure {
@@ -62,7 +62,7 @@ namespace kos {
 	};
 	class FigureList {
 	private:
-		std::vector<FigurePtr> figure_list;
+		vector<FigurePtr> figure_list;
 	public:
 		void swap(FigureList& OtherList) noexcept;
 
